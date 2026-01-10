@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Commandez vos plats préférés à Lomé - Livraison rapide">
+    <title>Délice Lomé - Livraison de Repas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header transparent" id="header">
+        <div class="header-container">
+            <!-- Logo - REMPLACER .logo-image par <img src="logo.png" alt="Délice Lomé"> -->
+            <a href="#" class="logo">
+                <div class="logo-image">DL</div>
+                <span class="logo-text">Délice Lomé</span>
+            </a>
+
+            <!-- Menu hamburger -->
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <!-- Menu mobile -->
+            <div class="mobile-menu" id="mobileMenu">
+                <nav>
+                    <a href="#menu">Notre Menu</a>
+                    <a href="#order">Commander</a>
+                    <a href="tel:+22890123456">Nous Appeler</a>
+                    <a href="#about">À Propos</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overlay menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- HERO -->
+    <section class="hero" id="heroSection">
+        <!-- Carousel d'images de fond -->
+        <div class="hero-carousel" id="heroCarousel">
+            <!-- REMPLACER LES SRC PAR VOS VRAIES IMAGES -->
+            <div class="hero-slide active">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600" alt="Plats délicieux">
+                <!-- REMPLACER PAR : <img src="images/hero-1.jpg" alt="Plats délicieux"> -->
+            </div>
+            <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1600" alt="Cuisine locale">
+                <!-- REMPLACER PAR : <img src="images/hero-2.jpg" alt="Cuisine locale"> -->
+            </div>
+            <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1600" alt="Livraison rapide">
+                <!-- REMPLACER PAR : <img src="images/hero-3.jpg" alt="Livraison rapide"> -->
+            </div>
+        </div>
+        
+        <!-- Overlay pour contraste texte -->
+        <div class="hero-overlay"></div>
+        
+        <!-- Points de navigation -->
+        <div class="carousel-dots" id="carouselDots">
+            <button class="carousel-dot active" aria-label="Image 1" data-slide="0"></button>
+            <button class="carousel-dot" aria-label="Image 2" data-slide="1"></button>
+            <button class="carousel-dot" aria-label="Image 3" data-slide="2"></button>
+        </div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Votre repas chaud livré chez vous à Lomé</h1>
+            <p class="hero-subtitle">Choisissez dans notre menu, on s'occupe de la suite</p>
+            <a href="#menu" class="cta-button">Commander maintenant</a>
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section class="menu-section" id="menu">
+        <h2 class="section-title">Notre Menu</h2>
+        <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <!-- EXTRAS -->
+    <section class="extras-section">
+        <h2 class="section-title">Suppléments & Boissons</h2>
+        <div class="extras-grid" id="extrasGrid"></div>
+    </section>
+
+    <!-- ORDER FORM -->
+    <section class="order-section" id="order">
+        <h2 class="section-title">Finaliser ma commande</h2>
+        <form class="order-form" id="orderForm">
+            <div class="cart-summary" id="cartSummary">
+                <div class="cart-empty">Votre panier est vide</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="name">Votre nom *</label>
+                <input type="text" id="name" class="form-input" required placeholder="Ex: Koffi Mensah">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="phone">Téléphone *</label>
+                <input type="tel" id="phone" class="form-input" required placeholder="Ex: 90 12 34 56">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="quartier">Quartier de livraison *</label>
+                <input type="text" id="quartier" class="form-input" required placeholder="Ex: Nyékonakpoè">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="time">Heure souhaitée *</label>
+                <input type="text" id="time" class="form-input" required placeholder="Ex: 13h00 ou dès que possible">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="notes">Indications complémentaires (optionnel)</label>
+                <textarea id="notes" class="form-input" rows="3" placeholder="Ex: Maison blanche à côté de l'église"></textarea>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn" disabled>
+                <span>📱</span>
+                <span>Envoyer la commande par WhatsApp</span>
+            </button>
+        </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-contact">
+            <p>📞 <a href="tel:+22890123456">90 12 34 56</a></p>
+            <p>📍 Lomé, Togo</p>
+        </div>
+        <p style="font-size: 0.9rem; opacity: 0.8;">Paiement à la livraison • Livraison rapide</p>
+    </footer>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">✅</div>
+            <h3 class="modal-title">Commande envoyée !</h3>
+            <p class="modal-text">Nous avons bien reçu votre commande. Nous vous contactons très vite.</p>
+            <button class="modal-button" onclick="closeModal()">Fermer</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== DONNÉES DES PLATS =====
+        const dishes = [
+            {
+                id: 'ayimolou',
+                name: 'Ayimolou',
+                description: 'Riz aux haricots rouges, servi avec sauce pimentée',
+                price: 1500,
+                image: 'images/ayimolou.jpg' // REMPLACER par chemin réel
+            },
+            {
+                id: 'attieke',
+                name: 'Attiéké et poisson',
+                description: 'Semoule de manioc fermenté avec poisson frit',
+                price: 2000,
+                image: 'images/attieke.jpg'
+            },
+            {
+                id: 'akpan',
+                name: 'Akpan et poisson',
+                description: 'Pâte de maïs fermenté avec poisson grillé',
+                price: 1800,
+                image: 'images/akpan.jpg'
+            },
+            {
+                id: 'spaghetti',
+                name: 'Spaghetti',
+                description: 'Pâtes sauce tomate avec légumes',
+                price: 1500,
+                image: 'images/spaghetti.jpg'
+            },
+            {
+                id: 'riz-tomate',
+                name: 'Riz sauce tomate + poulet/poisson',
+                description: 'Riz cuisiné avec sauce tomate et votre choix de protéine',
+                price: 2500,
+                image: 'images/riz-tomate.jpg'
+            },
+            {
+                id: 'riz-arachide',
+                name: 'Riz sauce arachide',
+                description: 'Riz avec sauce onctueuse à base d\'arachide',
+                price: 2000,
+                image: 'images/riz-arachide.jpg'
+            },
+            {
+                id: 'fufu',
+                name: 'Fufu + sauce du jour',
+                description: 'Pâte d\'igname pilée avec sauce (menu du jour)',
+                price: 2200,
+                image: 'images/fufu.jpg'
+            }
+        ];
+
+        const extras = [
+            { id: 'viande', name: 'Supplément viande', price: 500, icon: '🥩' },
+            { id: 'poisson', name: 'Supplément poisson', price: 500, icon: '🐟' },
+            { id: 'bissap', name: 'Bissap', price: 300, icon: '🥤' },
+            { id: 'gingembre', name: 'Gingembre', price: 300, icon: '🥤' },
+            { id: 'eau', name: 'Eau minérale', price: 200, icon: '💧' }
+        ];
+
+        // ===== ÉTAT DU PANIER =====
+        let cart = {};
+
+        // ===== GESTION HEADER STICKY =====
+        const header = document.getElementById('header');
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        // Changement header au scroll
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+                header.classList.remove('transparent');
+            } else {
+                header.classList.remove('scrolled');
+                header.classList.add('transparent');
+            }
+        });
+
+        // Toggle menu hamburger
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+        });
+
+        // Fermer menu au clic sur overlay
+        menuOverlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+        });
+
+        // Fermer menu au clic sur lien
+        document.querySelectorAll('.mobile-menu nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+            });
+        });
+
+        // ===== CAROUSEL HERO =====
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const totalSlides = slides.length;
+        const heroCarousel = document.getElementById('heroCarousel');
+        let autoPlayInterval;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        // Fonction pour afficher un slide spécifique
+        function goToSlide(index) {
+            // Retirer la classe active de l'ancien slide et dot
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            // Mettre à jour l'index
+            currentSlide = index;
+            
+            // Ajouter la classe active au nouveau slide et dot
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        // Fonction pour passer au slide suivant
+        function showNextSlide() {
+            const nextSlide = (currentSlide + 1) % totalSlides;
+            goToSlide(nextSlide);
+        }
+
+        // Fonction pour passer au slide précédent
+        function showPrevSlide() {
+            const prevSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            goToSlide(prevSlide);
+        }
+
+        // Démarrer le carousel automatique
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(showNextSlide, 5000);
+        }
+
+        // Arrêter le carousel automatique
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
+        }
+
+        // Gestion des clics sur les dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+                stopAutoPlay();
+                startAutoPlay(); // Redémarrer après interaction
+            });
+        });
+
+        // ===== SWIPE MOBILE =====
+        // Détecter le début du swipe
+        heroCarousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            stopAutoPlay(); // Pause pendant l'interaction
+        }, { passive: true });
+
+        // Détecter la fin du swipe
+        heroCarousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            startAutoPlay(); // Redémarrer après interaction
+        }, { passive: true });
+
+        // Gérer la direction du swipe
+        function handleSwipe() {
+            const swipeThreshold = 50; // Distance minimale pour considérer un swipe
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe vers la gauche - slide suivant
+                    showNextSlide();
+                } else {
+                    // Swipe vers la droite - slide précédent
+                    showPrevSlide();
+                }
+            }
+        }
+
+        // Pause au survol (desktop uniquement)
+        if (window.matchMedia('(min-width: 768px)').matches) {
+            heroCarousel.addEventListener('mouseenter', stopAutoPlay);
+            heroCarousel.addEventListener('mouseleave', startAutoPlay);
+        }
+
+        // Démarrer le carousel au chargement
+        startAutoPlay();
+
+        // ===== INITIALISATION =====
+        function init() {
+            renderMenu();
+            renderExtras();
+            updateCart();
+        }
+
+        // ===== RENDU DU MENU =====
+        function renderMenu() {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = dishes.map(dish => `
+                <div class="dish-card">
+                    <div class="dish-image ${dish.image ? '' : 'placeholder'}">
+                        ${dish.image ? 
+                            `<img src="${dish.image}" alt="${dish.name}" loading="lazy">` : 
+                            `Image de ${dish.name}`
+                        }
+                    </div>
+                    <div class="dish-content">
+                        <h3 class="dish-name">${dish.name}</h3>
+                        <p class="dish-description">${dish.description}</p>
+                        <div class="dish-footer">
+                            <span class="dish-price">${dish.price} F</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn" onclick="decreaseQuantity('${dish.id}')">−</button>
+                                <span class="qty-display" id="qty-${dish.id}">0</span>
+                                <button type="button" class="qty-btn" onclick="increaseQuantity('${dish.id}')">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== RENDU DES EXTRAS =====
+        function renderExtras() {
+            const extrasGrid = document.getElementById('extrasGrid');
+            extrasGrid.innerHTML = extras.map(extra => `
+                <div class="extra-item">
+                    <div class="extra-info">
+                        <div class="extra-name">${extra.icon} ${extra.name}</div>
+                        <div class="extra-price">${extra.price} F</div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button type="button" class="qty-btn" onclick="decreaseQuantity('${extra.id}')">−</button>
+                        <span class="qty-display" id="qty-${extra.id}">0</span>
+                        <button type="button" class="qty-btn" onclick="increaseQuantity('${extra.id}')">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== GESTION QUANTITÉS =====
+        function increaseQuantity(id) {
+            cart[id] = (cart[id] || 0) + 1;
+            updateCart();
+        }
+
+        function decreaseQuantity(id) {
+            if (cart[id] > 0) {
+                cart[id]--;
+                if (cart[id] === 0) delete cart[id];
+            }
+            updateCart();
+        }
+
+        // ===== MISE À JOUR DU PANIER =====
+        function updateCart() {
+            // Mise à jour des affichages de quantité
+            [...dishes, ...extras].forEach(item => {
+                const qtyElement = document.getElementById(`qty-${item.id}`);
+                if (qtyElement) {
+                    qtyElement.textContent = cart[item.id] || 0;
+                }
+            });
+
+            // Mise à jour du résumé
+            const cartSummary = document.getElementById('cartSummary');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            const items = Object.keys(cart);
+            if (items.length === 0) {
+                cartSummary.innerHTML = '<div class="cart-empty">Votre panier est vide</div>';
+                submitBtn.disabled = true;
+                return;
+            }
+
+            let total = 0;
+            let html = '';
+
+            items.forEach(id => {
+                const item = [...dishes, ...extras].find(i => i.id === id);
+                const subtotal = item.price * cart[id];
+                total += subtotal;
+                html += `
+                    <div class="cart-item">
+                        <span>${item.name} x${cart[id]}</span>
+                        <span>${subtotal} F</span>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="cart-total">
+                    <span>Total</span>
+                    <span>${total} F</span>
+                </div>
+            `;
+
+            cartSummary.innerHTML = html;
+            submitBtn.disabled = false;
+        }
+
+        // ===== GÉNÉRATION MESSAGE COMMANDE =====
+        function generateOrderMessage() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const quartier = document.getElementById('quartier').value;
+            const time = document.getElementById('time').value;
+            const notes = document.getElementById('notes').value;
+
+            let message = `🍽️ *NOUVELLE COMMANDE*\n\n`;
+            message += `👤 *Client:* ${name}\n`;
+            message += `📱 *Tél:* ${phone}\n`;
+            message += `📍 *Quartier:* ${quartier}\n`;
+            message += `🕐 *Heure:* ${time}\n\n`;
+            message += `🛒 *Commande:*\n`;
+
+            let total = 0;
+            Object.keys(cart).forEach(id => {
+                const item = [...dishes, ...extras].find(i => i.id === id);
+                const subtotal = item.price * cart[id];
+                total += subtotal;
+                message += `• ${item.name} x${cart[id]} = ${subtotal} F\n`;
+            });
+
+            message += `\n💰 *Total: ${total} F*\n`;
+            message += `💵 Paiement à la livraison\n`;
+
+            if (notes) {
+                message += `\n📝 *Notes:* ${notes}`;
+            }
+
+            return message;
+        }
+
+        // ===== SOUMISSION FORMULAIRE =====
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const message = generateOrderMessage();
+            const phoneNumber = '22890123456'; // À REMPLACER par le vrai numéro WhatsApp
+            
+            // Tentative d'ouverture WhatsApp
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Ouvrir WhatsApp
+            window.open(whatsappURL, '_blank');
+            
+            // Afficher modal de confirmation
+            setTimeout(() => {
+                document.getElementById('successModal').classList.add('active');
+            }, 500);
+
+            // Fallback : si WhatsApp ne s'ouvre pas, l'utilisateur peut copier le message
+            console.log('Message de commande:', message);
+        });
+
+        // ===== FERMETURE MODAL =====
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+            // Réinitialiser le formulaire
+            document.getElementById('orderForm').reset();
+            cart = {};
+            updateCart();
+        }
+
+        // ===== DÉMARRAGE =====
+        init();
+    </script>
+</body>
+</html>
