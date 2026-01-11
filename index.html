@@ -11,10 +11,9 @@
     <!-- HEADER -->
     <header class="header transparent" id="header">
         <div class="header-container">
-            <!-- Logo - REMPLACER .logo-image par <img src="logo.png" alt="Délice Lomé"> -->
             <a href="#" class="logo">
-                <div class="logo-image">DL</div>
-                <span class="logo-text">Délice Lomé</span>
+                <img src="images/Logo noir.png" alt="275 Fast-Food" class="logo-image">
+                <span class="logo-text">275 Fast-Food</span>
             </a>
 
             <!-- Menu hamburger -->
@@ -69,8 +68,9 @@
         </div>
         
         <div class="hero-content">
-            <h1 class="hero-title">Votre repas chaud livré chez vous à Lomé</h1>
-            <p class="hero-subtitle">Choisissez dans notre menu, on s'occupe de la suite</p>
+            <span class="delivery-badge">Livraison à Lomé & Aného</span>
+            <h1 class="hero-title">Les saveurs d’ici, livrées chez vous</h1>
+            <p class="hero-subtitle">Commandez vos plats préférés, nous préparons et livrons. Paiement à la livraison</p>
             <a href="#menu" class="cta-button">Commander maintenant</a>
         </div>
     </section>
@@ -104,6 +104,19 @@
                 <label class="form-label" for="phone">Téléphone *</label>
                 <input type="tel" id="phone" class="form-input" required placeholder="Ex: 90 12 34 56">
             </div>
+
+                        <div class="form-group">
+                <label class="form-label" for="location">
+                    Localisation GPS <span class="form-label-optional">(optionnel)</span>
+                </label>
+                <input type="text" id="location" class="form-input" readonly placeholder="Position GPS (à détecter)">
+                <button type="button" class="geo-button" id="geoButton" onclick="getLocation()">
+                    <span class="icon">📍</span>
+                    <span id="geoButtonText">Utiliser ma position actuelle</span>
+                </button>
+                <div class="geo-status" id="geoStatus"></div>
+            </div>
+
 
             <div class="form-group">
                 <label class="form-label" for="quartier">Quartier de livraison *</label>
@@ -146,15 +159,17 @@
         </div>
     </div>
 
+    
+
     <script>
         // ===== DONNÉES DES PLATS =====
         const dishes = [
             {
-                id: 'ayimolou',
-                name: 'Ayimolou',
-                description: 'Riz aux haricots rouges, servi avec sauce pimentée',
-                price: 1500,
-                image: 'images/ayimolou.jpg' // REMPLACER par chemin réel
+                id: 'spaghetti',
+                name: 'Spaghetti',
+                description: 'Accompagné de viande de bœuf, saucisse & 2 œufs',
+                price: 3500,
+                image: 'images/spaghetti.jpg' // REMPLACER par chemin réel
             },
             {
                 id: 'attieke',
@@ -166,43 +181,20 @@
             {
                 id: 'akpan',
                 name: 'Akpan et poisson',
-                description: 'Pâte de maïs fermenté avec poisson grillé',
+                description: 'Accompagné de sauce tomate et poisson frit',
                 price: 1800,
                 image: 'images/akpan.jpg'
             },
             {
-                id: 'spaghetti',
-                name: 'Spaghetti',
-                description: 'Pâtes sauce tomate avec légumes',
+                id: 'ayimolou',
+                name: 'Ayimolou',
+                description: 'Accompagné de sauce pimentée, viande de bœuf & poisson frit',
                 price: 1500,
-                image: 'images/spaghetti.jpg'
+                image: 'images/ayimolou.jpg'
             },
-            {
-                id: 'riz-tomate',
-                name: 'Riz sauce tomate + poulet/poisson',
-                description: 'Riz cuisiné avec sauce tomate et votre choix de protéine',
-                price: 2500,
-                image: 'images/riz-tomate.jpg'
-            },
-            {
-                id: 'riz-arachide',
-                name: 'Riz sauce arachide',
-                description: 'Riz avec sauce onctueuse à base d\'arachide',
-                price: 2000,
-                image: 'images/riz-arachide.jpg'
-            },
-            {
-                id: 'fufu',
-                name: 'Fufu + sauce du jour',
-                description: 'Pâte d\'igname pilée avec sauce (menu du jour)',
-                price: 2200,
-                image: 'images/fufu.jpg'
-            }
         ];
 
         const extras = [
-            { id: 'viande', name: 'Supplément viande', price: 500, icon: '🥩' },
-            { id: 'poisson', name: 'Supplément poisson', price: 500, icon: '🐟' },
             { id: 'bissap', name: 'Bissap', price: 300, icon: '🥤' },
             { id: 'gingembre', name: 'Gingembre', price: 300, icon: '🥤' },
             { id: 'eau', name: 'Eau minérale', price: 200, icon: '💧' }
@@ -227,6 +219,104 @@
                 header.classList.add('transparent');
             }
         });
+
+
+                // ===== GÉOLOCALISATION =====
+        function getLocation() {
+            const geoButton = document.getElementById('geoButton');
+            const geoButtonText = document.getElementById('geoButtonText');
+            const geoStatus = document.getElementById('geoStatus');
+            const locationInput = document.getElementById('location');
+
+            // Vérifier si la géolocalisation est supportée
+            if (!navigator.geolocation) {
+                showGeoStatus('Géolocalisation non supportée par votre navigateur', 'error');
+                return;
+            }
+
+            // État de chargement
+            geoButton.classList.add('loading');
+            geoButton.disabled = true;
+            geoButtonText.textContent = 'Détection en cours...';
+            geoStatus.className = 'geo-status';
+            geoStatus.style.display = 'none';
+
+            // Options de géolocalisation
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            };
+
+            // Demander la position
+            navigator.geolocation.getCurrentPosition(
+                // Succès
+                function(position) {
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lon = position.coords.longitude.toFixed(6);
+                    
+                    userLocation = {
+                        latitude: lat,
+                        longitude: lon,
+                        accuracy: position.coords.accuracy
+                    };
+
+                    // Afficher la position
+                    locationInput.value = `${lat}, ${lon}`;
+                    
+                    // Réinitialiser le bouton
+                    geoButton.classList.remove('loading');
+                    geoButton.disabled = false;
+                    geoButtonText.textContent = 'Position détectée ✓';
+                    
+                    // Message de succès
+                    showGeoStatus(`Position détectée avec précision de ${Math.round(position.coords.accuracy)}m`, 'success');
+
+                    // Optionnel : essayer d'obtenir l'adresse via reverse geocoding
+                    // (nécessiterait une API externe comme OpenStreetMap Nominatim)
+                },
+                // Erreur
+                function(error) {
+                    geoButton.classList.remove('loading');
+                    geoButton.disabled = false;
+                    geoButtonText.textContent = 'Réessayer la détection';
+
+                    let errorMessage = '';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage = 'Autorisation refusée. Vous pouvez saisir votre quartier manuellement.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage = 'Position indisponible. Vérifiez votre connexion.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage = 'Délai dépassé. Réessayez ou saisissez votre quartier.';
+                            break;
+                        default:
+                            errorMessage = 'Erreur inconnue. Vous pouvez saisir votre quartier manuellement.';
+                    }
+                    
+                    showGeoStatus(errorMessage, 'error');
+                },
+                options
+            );
+        }
+
+        function showGeoStatus(message, type) {
+            const geoStatus = document.getElementById('geoStatus');
+            geoStatus.textContent = message;
+            geoStatus.className = `geo-status ${type}`;
+            geoStatus.style.display = 'block';
+
+            // Masquer automatiquement après 5 secondes pour le succès
+            if (type === 'success') {
+                setTimeout(() => {
+                    geoStatus.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+
 
         // Toggle menu hamburger
         hamburger.addEventListener('click', () => {
@@ -462,6 +552,7 @@
         function generateOrderMessage() {
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
+            const location = document.getElementById('location').value;
             const quartier = document.getElementById('quartier').value;
             const time = document.getElementById('time').value;
             const notes = document.getElementById('notes').value;
@@ -469,16 +560,25 @@
             let message = `🍽️ *NOUVELLE COMMANDE*\n\n`;
             message += `👤 *Client:* ${name}\n`;
             message += `📱 *Tél:* ${phone}\n`;
-            message += `📍 *Quartier:* ${quartier}\n`;
+            
+            if (location) {
+                message += `📍 *GPS:* ${location}\n`;
+                message += `🗺️ *Lien:* https://maps.google.com/?q=${location}\n`;
+            }
+            
+            message += `🏘️ *Repère:* ${quartier}\n`;
             message += `🕐 *Heure:* ${time}\n\n`;
             message += `🛒 *Commande:*\n`;
 
             let total = 0;
-            Object.keys(cart).forEach(id => {
-                const item = [...dishes, ...extras].find(i => i.id === id);
-                const subtotal = item.price * cart[id];
+            Object.keys(cart).forEach(key => {
+                const item = cart[key];
+                const itemName = item.dish ? item.dish.name : (extras.find(e => e.id === key)?.name || '');
+                const itemPrice = item.dish ? item.dish.price : (extras.find(e => e.id === key)?.price || 0);
+                const optionText = item.optionLabel ? ` (${item.optionLabel})` : '';
+                const subtotal = itemPrice * item.quantity;
                 total += subtotal;
-                message += `• ${item.name} x${cart[id]} = ${subtotal} F\n`;
+                message += `• ${itemName}${optionText} x${item.quantity} = ${subtotal} F\n`;
             });
 
             message += `\n💰 *Total: ${total} F*\n`;
@@ -490,6 +590,7 @@
 
             return message;
         }
+
 
         // ===== SOUMISSION FORMULAIRE =====
         document.getElementById('orderForm').addEventListener('submit', function(e) {
