@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="images/png" href="images/Logo noir.png">
     <meta name="description" content="Commandez vos plats préférés à Lomé - Livraison rapide">
     <title>Délice Lomé - Livraison de Repas</title>
     <link rel="stylesheet" href="style.css">
@@ -175,29 +176,29 @@
                 id: 'attieke',
                 name: 'Attiéké et poisson',
                 description: 'Semoule de manioc fermenté avec poisson frit',
-                price: 2000,
+                price: 2480,
                 image: 'images/Attieke.jpg'
             },
             {
                 id: 'akpan',
                 name: 'Akpan et poisson',
                 description: 'Accompagné de sauce tomate et poisson frit',
-                price: 1800,
+                price: 2195,
                 image: 'images/Akpan.jpg'
             },
             {
                 id: 'ayimolou',
                 name: 'Ayimolou',
                 description: 'Accompagné de sauce pimentée, viande de bœuf & poisson frit',
-                price: 1500,
+                price: 3395,
                 image: 'images/Ayimolou.jpg'
             },
         ];
 
         const extras = [
-            { id: 'bissap', name: 'Bissap', price: 300, icon: '🥤' },
-            { id: 'gingembre', name: 'Gingembre', price: 300, icon: '🥤' },
-            { id: 'eau', name: 'Eau minérale', price: 200, icon: '💧' }
+            { id: 'bissap', name: 'Bissap', price: 850, icon: '🥤' },
+            { id: 'gingembre', name: 'Gingembre', price: 1480, icon: '🥤' },
+            { id: 'eau', name: 'Eau minérale', price: 800, icon: '💧' }
         ];
 
         // ===== ÉTAT DU PANIER =====
@@ -457,7 +458,7 @@
                         <h3 class="dish-name">${dish.name}</h3>
                         <p class="dish-description">${dish.description}</p>
                         <div class="dish-footer">
-                            <span class="dish-price">${dish.price} F</span>
+                            <span class="dish-price">${dish.price} FCFA</span>
                             <div class="quantity-controls">
                                 <button type="button" class="qty-btn" onclick="decreaseQuantity('${dish.id}')">−</button>
                                 <span class="qty-display" id="qty-${dish.id}">0</span>
@@ -476,7 +477,7 @@
                 <div class="extra-item">
                     <div class="extra-info">
                         <div class="extra-name">${extra.icon} ${extra.name}</div>
-                        <div class="extra-price">${extra.price} F</div>
+                        <div class="extra-price">${extra.price} FCFA</div>
                     </div>
                     <div class="quantity-controls">
                         <button type="button" class="qty-btn" onclick="decreaseQuantity('${extra.id}')">−</button>
