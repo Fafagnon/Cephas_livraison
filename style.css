@@ -367,7 +367,6 @@
             }
         }
 
-
         /* Contenu hero */
         .hero-content {
             position: relative;
@@ -425,6 +424,11 @@
                 padding: 8rem 2rem 4rem;
             }
 
+            .delivery-badge {
+                font-size: 0.95rem;
+                padding: 0.6rem 1.5rem;
+            }
+
             .hero-title {
                 font-size: 3rem;
             }
@@ -455,6 +459,11 @@
         @media (min-width: 1024px) {
             .hero-title {
                 font-size: 3.5rem;
+            }
+
+            .delivery-badge {
+                font-size: 1rem;
+                padding: 0.65rem 1.75rem;
             }
 
             .hamburger {
@@ -597,6 +606,26 @@
             color: var(--primary);
         }
 
+        /* Bouton pour plats avec options */
+        .add-dish-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .add-dish-btn:active {
+            transform: scale(0.98);
+            background: var(--primary-dark);
+        }
+
+        /* Contrôles de quantité pour plats sans options */
         .quantity-controls {
             display: flex;
             align-items: center;
@@ -632,7 +661,6 @@
             font-weight: 700;
             font-size: 1.1rem;
         }
-
 
         /* ===== EXTRAS SECTION ===== */
         .extras-section {
@@ -730,6 +758,12 @@
             color: var(--text-dark);
         }
 
+        .form-label-optional {
+            font-weight: 400;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
         .form-input {
             width: 100%;
             padding: 1rem;
@@ -745,34 +779,12 @@
             border-color: var(--primary);
         }
 
-        .submit-button {
-            width: 100%;
-            background: var(--success);
-            color: white;
-            border: none;
-            padding: 1.25rem;
-            font-size: 1.15rem;
-            font-weight: 700;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: var(--shadow-lg);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+        .form-input:disabled {
+            background: #f5f5f5;
+            color: var(--text-light);
         }
 
-        .submit-button:active {
-            transform: scale(0.98);
-        }
-
-        .submit-button:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
-        }
-
-                /* Bouton géolocalisation */
+        /* Bouton géolocalisation */
         .geo-button {
             width: 100%;
             background: white;
@@ -895,70 +907,225 @@
             font-weight: 600;
         }
 
-        /* ===== MODAL ===== */
-        .modal {
+        /* ===== MODAL OPTIONS PLAT ===== */
+        .dish-options-modal {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+            z-index: 1001;
+            max-height: 80vh;
+            animation: slideUpModal 0.3s ease-out;
+            overflow-y: auto;
+        }
+
+        .dish-options-modal.active {
+            display: block;
+        }
+
+        @keyframes slideUpModal {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 1.5rem 1.25rem 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            z-index: 10;
+        }
+
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            margin: 0 auto 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-price {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 1.5rem 1.25rem;
+        }
+
+        .option-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .option-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .option-choice {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .option-choice:active {
+            transform: scale(0.98);
+        }
+
+        .option-choice.selected {
+            background: #E8F5E9;
+            border-color: var(--success);
+        }
+
+        .option-choice input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .option-choice label {
+            flex: 1;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 1rem 1.25rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-selector button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .quantity-selector button:active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .quantity-selector .quantity {
+            font-size: 1.5rem;
+            font-weight: 700;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 1.25rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .add-to-cart-btn:not(:disabled):active {
+            transform: scale(0.98);
+        }
+
+        /* Overlay pour fermer la modal */
+        .options-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
         }
 
-        .modal.active {
-            display: flex;
+        .options-overlay.active {
+            display: block;
         }
 
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            max-width: 400px;
-            text-align: center;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
+        @media (min-width: 768px) {
+            .dish-options-modal {
+                left: 50%;
+                transform: translateX(-50%);
+                max-width: 500px;
+                border-radius: 20px;
+                bottom: auto;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                max-height: 90vh;
             }
-            to {
-                transform: translateY(0);
-                opacity: 1;
+
+            .dish-options-modal.active {
+                animation: scaleIn 0.3s ease-out;
             }
-        }
 
-        .modal-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
-        }
-
-        .modal-text {
-            color: var(--text-light);
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
+            @keyframes scaleIn {
+                from {
+                    transform: translate(-50%, -50%) scale(0.9);
+                    opacity: 0;
+                }
+                to {
+                    transform: translate(-50%, -50%) scale(1);
+                    opacity: 1;
+                }
+            }
         }
 
         /* ===== RESPONSIVE ===== */

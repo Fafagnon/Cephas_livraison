@@ -12,9 +12,10 @@
     <!-- HEADER -->
     <header class="header transparent" id="header">
         <div class="header-container">
+            <!-- Logo - REMPLACER .logo-image par <img src="logo.png" alt="Délice Lomé"> -->
             <a href="#" class="logo">
-                <img src="images/Logo noir.png" alt="275 Fast-Food" class="logo-image">
-                <span class="logo-text">275 Fast-Food</span>
+               <img src="images/Logo noir.png" alt="275 Fast-Food" class="logo-image">                
+               <span class="logo-text">275 Fast-Food</span>
             </a>
 
             <!-- Menu hamburger -->
@@ -84,7 +85,7 @@
 
     <!-- EXTRAS -->
     <section class="extras-section">
-        <h2 class="section-title">Suppléments & Boissons</h2>
+        <h2 class="section-title">Nos Boissons</h2>
         <div class="extras-grid" id="extrasGrid"></div>
     </section>
 
@@ -103,10 +104,10 @@
 
             <div class="form-group">
                 <label class="form-label" for="phone">Téléphone *</label>
-                <input type="tel" id="phone" class="form-input" required placeholder="Ex: 99 32 46 36">
+                <input type="tel" id="phone" class="form-input" required placeholder="Ex: 90 12 34 56">
             </div>
 
-                        <div class="form-group">
+            <div class="form-group">
                 <label class="form-label" for="location">
                     Localisation GPS <span class="form-label-optional">(optionnel)</span>
                 </label>
@@ -118,10 +119,9 @@
                 <div class="geo-status" id="geoStatus"></div>
             </div>
 
-
             <div class="form-group">
-                <label class="form-label" for="quartier">Quartier de livraison *</label>
-                <input type="text" id="quartier" class="form-input" required placeholder="Ex: Nyékonakpoè">
+                <label class="form-label" for="quartier">Repère / Quartier *</label>
+                <input type="text" id="quartier" class="form-input" required placeholder="Ex: Nyékonakpoè, près de l'église">
             </div>
 
             <div class="form-group">
@@ -144,33 +144,85 @@
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-contact">
-            <p>📞 <a href="tel:+22896403078">96 40 30 78</a></p>
+            <p>📞 <a href="tel:+22890123456">+228 96 40 30 78</a></p>
             <p>📍 Lomé, Togo</p>
         </div>
         <p style="font-size: 0.9rem; opacity: 0.8;">Paiement à la livraison • Livraison rapide</p>
     </footer>
 
     <!-- SUCCESS MODAL -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <div class="modal-icon">✅</div>
-            <h3 class="modal-title">Commande envoyée !</h3>
-            <p class="modal-text">Nous avons bien reçu votre commande. Nous vous contactons très vite.</p>
-            <button class="modal-button" onclick="closeModal()">Fermer</button>
+    <div class="menu-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; padding: 1rem;" id="successModal">
+        <div style="background: white; padding: 2rem; border-radius: 16px; max-width: 400px; text-align: center; animation: slideUp 0.3s ease;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">✅</div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-dark);">Commande envoyée !</h3>
+            <p style="color: var(--text-light); margin-bottom: 1.5rem;">Nous avons bien reçu votre commande. Nous vous contactons très vite.</p>
+            <button style="background: var(--primary); color: white; border: none; padding: 1rem 2rem; font-size: 1rem; font-weight: 600; border-radius: 50px; cursor: pointer;" onclick="closeSuccessModal()">Fermer</button>
         </div>
     </div>
 
-    
+    <!-- MODAL OPTIONS PLAT -->
+    <div class="options-overlay" id="optionsOverlay"></div>
+    <div class="dish-options-modal" id="dishOptionsModal">
+        <div class="modal-header">
+            <div class="modal-handle"></div>
+            <h3 class="modal-title" id="modalDishName"></h3>
+            <p class="modal-price" id="modalDishPrice"></p>
+        </div>
+
+        <div class="modal-body" id="modalBody">
+            <!-- Options dynamiques insérées ici -->
+        </div>
+
+        <div class="modal-footer">
+            <div class="quantity-selector">
+                <button type="button" onclick="decreaseModalQuantity()">−</button>
+                <span class="quantity" id="modalQuantity">1</span>
+                <button type="button" onclick="increaseModalQuantity()">+</button>
+            </div>
+            <button class="add-to-cart-btn" id="addToCartBtn" disabled onclick="addDishToCart()">
+                Ajouter à la commande
+            </button>
+        </div>
+    </div>
 
     <script>
         // ===== DONNÉES DES PLATS =====
         const dishes = [
+            // ========================================
+            // PLAT AVEC OPTIONS : SPAGHETTI (NOUVEAU)
+            // Ce plat affiche une modal pour choisir avec/sans mayo
+            // ========================================
             {
                 id: 'spaghetti',
                 name: 'Spaghetti',
                 description: 'Accompagné de viande de bœuf, saucisse & 2 œufs',
                 price: 3500,
-                image: 'images/spaghetti.jpg' // REMPLACER par chemin réel
+                image: 'images/spaghetti.jpg',
+                options: {
+                    type: 'radio',
+                    label: 'Choisissez votre préférence',
+                    required: true,
+                    choices: [
+                        { id: 'avec-mayo', label: 'Avec mayonnaise' },
+                        { id: 'sans-mayo', label: 'Sans mayonnaise' }
+                    ]
+                }
+            },
+            {
+                id: 'akpan',
+                name: 'Akpan',
+                description: 'Accompagné de sauce tomate et poisson frit',
+                price: 2195,
+                image: 'images/Akpan.jpg',
+                options: {
+                    type: 'radio',
+                    label: 'Choisissez votre préférence',
+                    required: true,
+                    choices: [
+                        { id: 'poisson braise', label: 'Avec poisson braisé' },
+                        { id: 'poisson frit', label: 'Avec poisson frit' }
+                    ]
+                }
             },
             {
                 id: 'attieke',
@@ -180,49 +232,28 @@
                 image: 'images/Attieke.jpg'
             },
             {
-                id: 'akpan',
-                name: 'Akpan et poisson',
-                description: 'Accompagné de sauce tomate et poisson frit',
-                price: 2195,
-                image: 'images/Akpan.jpg'
-            },
-            {
                 id: 'ayimolou',
                 name: 'Ayimolou',
                 description: 'Accompagné de sauce pimentée, viande de bœuf & poisson frit',
                 price: 3395,
                 image: 'images/Ayimolou.jpg'
-            },
+            }
         ];
 
         const extras = [
-            { id: 'bissap', name: 'Bissap', price: 850, icon: '🥤' },
-            { id: 'gingembre', name: 'Gingembre', price: 1480, icon: '🥤' },
-            { id: 'eau', name: 'Eau minérale', price: 800, icon: '💧' }
+            { id: 'bissap', name: 'Jus de Bissap', price: 300, icon: '🥤' },
+            { id: 'gingembre', name: 'Jus de Gingembre', price: 300, icon: '🥤' },
+            { id: 'eau', name: 'Eau minérale', price: 200, icon: '💧' }
         ];
 
         // ===== ÉTAT DU PANIER =====
         let cart = {};
+        let currentDish = null;
+        let modalQuantity = 1;
+        let selectedOption = null;
+        let userLocation = null;
 
-        // ===== GESTION HEADER STICKY =====
-        const header = document.getElementById('header');
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const menuOverlay = document.getElementById('menuOverlay');
-
-        // Changement header au scroll
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-                header.classList.remove('transparent');
-            } else {
-                header.classList.remove('scrolled');
-                header.classList.add('transparent');
-            }
-        });
-
-
-                // ===== GÉOLOCALISATION =====
+        // ===== GÉOLOCALISATION =====
         function getLocation() {
             const geoButton = document.getElementById('geoButton');
             const geoButtonText = document.getElementById('geoButtonText');
@@ -317,7 +348,22 @@
             }
         }
 
+        // ===== GESTION HEADER STICKY =====
+        const header = document.getElementById('header');
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
 
+        // Changement header au scroll
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+                header.classList.remove('transparent');
+            } else {
+                header.classList.remove('scrolled');
+                header.classList.add('transparent');
+            }
+        });
 
         // Toggle menu hamburger
         hamburger.addEventListener('click', () => {
@@ -446,28 +492,35 @@
         // ===== RENDU DU MENU =====
         function renderMenu() {
             const menuGrid = document.getElementById('menuGrid');
-            menuGrid.innerHTML = dishes.map(dish => `
-                <div class="dish-card">
-                    <div class="dish-image ${dish.image ? '' : 'placeholder'}">
-                        ${dish.image ? 
-                            `<img src="${dish.image}" alt="${dish.name}" loading="lazy">` : 
-                            `Image de ${dish.name}`
-                        }
-                    </div>
-                    <div class="dish-content">
-                        <h3 class="dish-name">${dish.name}</h3>
-                        <p class="dish-description">${dish.description}</p>
-                        <div class="dish-footer">
-                            <span class="dish-price">${dish.price} FCFA</span>
-                            <div class="quantity-controls">
-                                <button type="button" class="qty-btn" onclick="decreaseQuantity('${dish.id}')">−</button>
-                                <span class="qty-display" id="qty-${dish.id}">0</span>
-                                <button type="button" class="qty-btn" onclick="increaseQuantity('${dish.id}')">+</button>
+            menuGrid.innerHTML = dishes.map(dish => {
+                const hasOptions = dish.options !== undefined;
+                
+                return `
+                    <div class="dish-card">
+                        <div class="dish-image ${dish.image ? '' : 'placeholder'}">
+                            ${dish.image ? 
+                                `<img src="${dish.image}" alt="${dish.name}" loading="lazy">` : 
+                                `Image de ${dish.name}`
+                            }
+                        </div>
+                        <div class="dish-content">
+                            <h3 class="dish-name">${dish.name}</h3>
+                            <p class="dish-description">${dish.description}</p>
+                            <div class="dish-footer">
+                                <span class="dish-price">${dish.price} F</span>
+                                ${hasOptions ? 
+                                    `<button type="button" class="add-dish-btn" onclick="openDishOptions('${dish.id}')">Choisir</button>` :
+                                    `<div class="quantity-controls">
+                                        <button type="button" class="qty-btn" onclick="decreaseQuantity('${dish.id}')">−</button>
+                                        <span class="qty-display" id="qty-${dish.id}">0</span>
+                                        <button type="button" class="qty-btn" onclick="increaseQuantity('${dish.id}')">+</button>
+                                    </div>`
+                                }
                             </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // ===== RENDU DES EXTRAS =====
@@ -477,7 +530,7 @@
                 <div class="extra-item">
                     <div class="extra-info">
                         <div class="extra-name">${extra.icon} ${extra.name}</div>
-                        <div class="extra-price">${extra.price} FCFA</div>
+                        <div class="extra-price">${extra.price} F</div>
                     </div>
                     <div class="quantity-controls">
                         <button type="button" class="qty-btn" onclick="decreaseQuantity('${extra.id}')">−</button>
@@ -488,27 +541,145 @@
             `).join('');
         }
 
-        // ===== GESTION QUANTITÉS =====
+        // ===== GESTION QUANTITÉS (plats sans options) =====
         function increaseQuantity(id) {
-            cart[id] = (cart[id] || 0) + 1;
-            updateCart();
+            const dish = dishes.find(d => d.id === id);
+            if (!dish.options) {
+                const cartKey = id;
+                if (!cart[cartKey]) {
+                    cart[cartKey] = { dish: dish, quantity: 0 };
+                }
+                cart[cartKey].quantity++;
+                updateCart();
+            }
         }
 
         function decreaseQuantity(id) {
-            if (cart[id] > 0) {
-                cart[id]--;
-                if (cart[id] === 0) delete cart[id];
+            const cartKey = id;
+            if (cart[cartKey] && cart[cartKey].quantity > 0) {
+                cart[cartKey].quantity--;
+                if (cart[cartKey].quantity === 0) {
+                    delete cart[cartKey];
+                }
+                updateCart();
             }
+        }
+
+        // ===== MODAL OPTIONS PLAT =====
+        function openDishOptions(dishId) {
+            const dish = dishes.find(d => d.id === dishId);
+            if (!dish) return;
+
+            currentDish = dish;
+            modalQuantity = 1;
+            selectedOption = null;
+
+            // Remplir la modal
+            document.getElementById('modalDishName').textContent = dish.name;
+            document.getElementById('modalDishPrice').textContent = dish.price + ' F';
+            document.getElementById('modalQuantity').textContent = modalQuantity;
+
+            // Générer les options
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div class="option-section">
+                    <label class="option-label">${dish.options.label}</label>
+                    ${dish.options.choices.map((choice, index) => `
+                        <div class="option-choice" onclick="selectOption('${choice.id}')">
+                            <input type="radio" 
+                                   name="dish-option" 
+                                   id="option-${choice.id}" 
+                                   value="${choice.id}"
+                                   onchange="selectOption('${choice.id}')">
+                            <label for="option-${choice.id}">${choice.label}</label>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Désactiver le bouton par défaut
+            document.getElementById('addToCartBtn').disabled = true;
+
+            // Afficher la modal
+            document.getElementById('optionsOverlay').classList.add('active');
+            document.getElementById('dishOptionsModal').classList.add('active');
+        }
+
+        function selectOption(optionId) {
+            selectedOption = optionId;
+
+            // Mettre à jour visuellement
+            document.querySelectorAll('.option-choice').forEach(choice => {
+                choice.classList.remove('selected');
+            });
+            const selectedChoice = document.querySelector(`#option-${optionId}`).closest('.option-choice');
+            selectedChoice.classList.add('selected');
+
+            // Activer le bouton
+            document.getElementById('addToCartBtn').disabled = false;
+        }
+
+        function increaseModalQuantity() {
+            modalQuantity++;
+            document.getElementById('modalQuantity').textContent = modalQuantity;
+        }
+
+        function decreaseModalQuantity() {
+            if (modalQuantity > 1) {
+                modalQuantity--;
+                document.getElementById('modalQuantity').textContent = modalQuantity;
+            }
+        }
+
+        function addDishToCart() {
+            if (!currentDish || !selectedOption) return;
+
+            const cartKey = `${currentDish.id}-${selectedOption}`;
+            
+            if (!cart[cartKey]) {
+                cart[cartKey] = {
+                    dish: currentDish,
+                    option: selectedOption,
+                    optionLabel: currentDish.options.choices.find(c => c.id === selectedOption).label,
+                    quantity: 0
+                };
+            }
+
+            cart[cartKey].quantity += modalQuantity;
+
+            // Fermer la modal
+            closeDishOptions();
             updateCart();
         }
 
+        function closeDishOptions() {
+            document.getElementById('optionsOverlay').classList.remove('active');
+            document.getElementById('dishOptionsModal').classList.remove('active');
+            currentDish = null;
+            selectedOption = null;
+            modalQuantity = 1;
+        }
+
+        // Fermer la modal au clic sur overlay
+        document.getElementById('optionsOverlay').addEventListener('click', closeDishOptions);
+
         // ===== MISE À JOUR DU PANIER =====
         function updateCart() {
-            // Mise à jour des affichages de quantité
-            [...dishes, ...extras].forEach(item => {
+            // Mise à jour des affichages de quantité pour plats sans options
+            dishes.filter(d => !d.options).forEach(dish => {
+                const qtyElement = document.getElementById(`qty-${dish.id}`);
+                if (qtyElement) {
+                    const cartItem = cart[dish.id];
+                    qtyElement.textContent = cartItem ? cartItem.quantity : 0;
+                }
+            });
+
+            // Mise à jour des affichages pour extras
+            extras.forEach(item => {
                 const qtyElement = document.getElementById(`qty-${item.id}`);
                 if (qtyElement) {
-                    qtyElement.textContent = cart[item.id] || 0;
+                    const cartItem = cart[item.id];
+                    qtyElement.textContent = cartItem ? cartItem.quantity : 0;
                 }
             });
 
@@ -526,13 +697,17 @@
             let total = 0;
             let html = '';
 
-            items.forEach(id => {
-                const item = [...dishes, ...extras].find(i => i.id === id);
-                const subtotal = item.price * cart[id];
+            items.forEach(key => {
+                const item = cart[key];
+                const itemName = item.dish ? item.dish.name : (extras.find(e => e.id === key)?.name || '');
+                const itemPrice = item.dish ? item.dish.price : (extras.find(e => e.id === key)?.price || 0);
+                const optionText = item.optionLabel ? ` (${item.optionLabel})` : '';
+                const subtotal = itemPrice * item.quantity;
                 total += subtotal;
+
                 html += `
                     <div class="cart-item">
-                        <span>${item.name} x${cart[id]}</span>
+                        <span>${itemName}${optionText} x${item.quantity}</span>
                         <span>${subtotal} F</span>
                     </div>
                 `;
@@ -592,13 +767,12 @@
             return message;
         }
 
-
         // ===== SOUMISSION FORMULAIRE =====
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const message = generateOrderMessage();
-            const phoneNumber = '22896403078'; // À REMPLACER par le vrai numéro WhatsApp
+            const phoneNumber = '22890123456'; // À REMPLACER par le vrai numéro WhatsApp
             
             // Tentative d'ouverture WhatsApp
             const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
@@ -608,19 +782,25 @@
             
             // Afficher modal de confirmation
             setTimeout(() => {
-                document.getElementById('successModal').classList.add('active');
+                const successModal = document.getElementById('successModal');
+                successModal.style.display = 'flex';
             }, 500);
 
             // Fallback : si WhatsApp ne s'ouvre pas, l'utilisateur peut copier le message
             console.log('Message de commande:', message);
         });
 
-        // ===== FERMETURE MODAL =====
-        function closeModal() {
-            document.getElementById('successModal').classList.remove('active');
+        // ===== FERMETURE MODAL SUCCESS =====
+        function closeSuccessModal() {
+            const successModal = document.getElementById('successModal');
+            successModal.style.display = 'none';
             // Réinitialiser le formulaire
             document.getElementById('orderForm').reset();
+            document.getElementById('location').value = '';
+            document.getElementById('geoButtonText').textContent = 'Utiliser ma position actuelle';
+            document.getElementById('geoStatus').style.display = 'none';
             cart = {};
+            userLocation = null;
             updateCart();
         }
 
